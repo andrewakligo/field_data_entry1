@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<title>NAMA Field Project Form</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{min-height:100%;font-family:Arial,sans-serif;font-size:15px;line-height:1.5;background:#f5f0e8;color:#1a202c}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+input,select,textarea{font-family:inherit;font-size:15px}
+
+/* ── AUTH ── */
+.auth-page{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 20px;background:#f5f0e8}
+.auth-logo{width:110px;height:110px;border-radius:50%;object-fit:cover;margin-bottom:18px;display:block}
+.auth-title{font-size:26px;font-weight:700;color:#123a2e;text-align:center;margin-bottom:4px}
+.auth-sub{font-size:14px;color:#718096;text-align:center;margin-bottom:28px}
+.auth-card{background:#fff;border-radius:16px;box-shadow:0 2px 20px rgba(0,0,0,.08);padding:24px 20px;width:100%;max-width:380px}
+.fld{margin-bottom:18px}
+.fld label{display:block;font-size:11px;font-weight:700;color:#718096;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.fld input{width:100%;padding:14px 16px;border:1.5px solid #e8e3d8;border-radius:10px;background:#fafaf8;color:#1a202c;font-size:15px;transition:border-color .2s}
+.fld input:focus{outline:none;border-color:#123a2e;background:#fff}
+.auth-btn{width:100%;padding:14px;border-radius:10px;background:#123a2e;color:#fff;font-size:16px;font-weight:700;cursor:pointer;transition:opacity .2s;margin-top:4px}
+.auth-btn:active{opacity:.85}
+.auth-btn[disabled]{opacity:.5;pointer-events:none}
+.auth-msg{font-size:12px;text-align:center;color:#e53e3e;min-height:18px;margin-top:10px}
+.auth-foot{text-align:center;margin-top:20px;font-size:14px;color:#718096}
+.auth-foot a{color:#123a2e;font-weight:700;text-decoration:none;border-bottom:1px solid #123a2e}
+
+/* ── HEADER ── */
+.hdr{background:#123a2e;color:#fff;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.hdr-inner{display:flex;align-items:center;gap:10px;padding:10px 16px}
+.hdr-logo{width:36px;height:36px;border-radius:50%;border:2px solid #a9781f;object-fit:cover;flex-shrink:0}
+.hdr-txt{flex:1;min-width:0}
+.hdr-txt h1{font-size:13px;font-weight:700;margin:0}
+.hdr-txt p{font-size:10px;color:rgba(255,255,255,.6);margin:1px 0 0}
+.hdr-right{display:flex;flex-direction:column;align-items:flex-end;flex-shrink:0}
+.hdr-name{font-size:11px;color:#a9c3b6}
+.logout-btn{color:rgba(255,255,255,.7);font-size:11px;font-weight:700;padding:3px 8px;border:1px solid rgba(255,255,255,.2);border-radius:6px;margin-top:3px}
+
+/* ── BODY ── */
+.body{padding:16px;max-width:600px;margin:0 auto}
+
+/* ── SECTION CARD ── */
+.scard{background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.04);margin-bottom:14px;overflow:hidden}
+.scard-hd{background:#123a2e;padding:11px 16px;font-size:11px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.06em}
+.scard-body{padding:16px}
+.scard-body .fld:last-child{margin-bottom:0}
+
+/* ── FORM FIELDS ── */
+.fld select,.fld textarea{width:100%;padding:12px 14px;border:1.5px solid #e8e3d8;border-radius:10px;background:#fafaf8;color:#1a202c;transition:border-color .2s}
+.fld select:focus,.fld textarea:focus{outline:none;border-color:#123a2e;background:#fff}
+.fld textarea{resize:vertical;min-height:90px}
+.fld input[type=number]{width:100%;padding:12px 14px;border:1.5px solid #e8e3d8;border-radius:10px;background:#fafaf8;color:#1a202c}
+.fld input[type=number]:focus{outline:none;border-color:#123a2e;background:#fff}
+.fld input[type=text]{width:100%;padding:12px 14px;border:1.5px solid #e8e3d8;border-radius:10px;background:#fafaf8;color:#1a202c}
+.fld input[type=text]:focus{outline:none;border-color:#123a2e;background:#fff}
+.req{color:#e53e3e;margin-left:2px}
+.hint{font-size:11px;color:#a0aec0;margin-top:5px}
+
+/* ── GPS ── */
+.gps-detect-btn{width:100%;padding:13px 16px;border-radius:10px;border:1.5px solid #123a2e;background:#f0f7f4;color:#123a2e;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.gps-detect-btn:active{background:#e0efe8}
+.gps-detect-btn.loading{background:#f7fafc;color:#a0aec0;border-color:#e2e8f0;cursor:not-allowed}
+.gps-pin-card{margin-top:12px;border-radius:10px;overflow:hidden;border:1.5px solid #e8e3d8}
+.gps-pin-top{background:#f0f7f4;padding:12px 14px;display:flex;align-items:flex-start;gap:10px}
+.gps-pin-ico{font-size:28px;flex-shrink:0;line-height:1}
+.gps-pin-info{flex:1;min-width:0}
+.gps-pin-label{font-size:10px;font-weight:700;color:#718096;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+.gps-pin-coords{font-size:15px;font-weight:700;color:#123a2e;font-family:monospace;margin-bottom:2px}
+.gps-pin-loc{font-size:12px;color:#4a5568}
+.gps-acc-row{padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.gps-acc-row.excellent{background:#f0fff4;border-top:1px solid #c6f6d5}
+.gps-acc-row.fair{background:#fffaf0;border-top:1px solid #fefcbf}
+.gps-acc-row.poor{background:#fff5f5;border-top:1px solid #fed7d7}
+.gps-acc-label{font-size:12px;font-weight:700}
+.gps-acc-label.excellent{color:#276749}
+.gps-acc-label.fair{color:#c05621}
+.gps-acc-label.poor{color:#c53030}
+.gps-acc-metres{font-size:12px;color:#718096}
+.gps-refresh{font-size:11px;font-weight:700;color:#123a2e;text-decoration:underline;cursor:pointer;flex-shrink:0}
+
+/* ── PHOTOS ── */
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.photo-slot{aspect-ratio:1;border-radius:10px;border:2px dashed #d4c9b0;background:#fafaf8;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden;transition:border-color .15s}
+.photo-slot.has-img{border-style:solid;border-color:#123a2e}
+.photo-slot img{width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0}
+.photo-slot .ph-ico{font-size:24px;color:#d4c9b0}
+.photo-slot .ph-num{font-size:10px;color:#a0aec0;margin-top:4px;font-weight:700}
+.photo-slot .ph-del{position:absolute;top:5px;right:5px;background:rgba(197,48,48,.9);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;z-index:2;cursor:pointer;font-weight:700}
+.photo-count{font-size:12px;color:#718096;margin-top:8px;text-align:center}
+
+/* ── SUBMIT ── */
+.submit-btn{width:100%;padding:15px;border-radius:12px;background:#123a2e;color:#fff;font-size:16px;font-weight:700;cursor:pointer;transition:opacity .2s;margin-bottom:32px}
+.submit-btn:active{opacity:.85}
+.submit-btn[disabled]{opacity:.45;pointer-events:none}
+
+/* ── SUCCESS ── */
+.success-page{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 20px;text-align:center;background:#f5f0e8}
+.success-ico{font-size:72px;margin-bottom:16px}
+.success-page h2{font-size:22px;font-weight:700;color:#123a2e;margin-bottom:8px}
+.success-page p{font-size:14px;color:#718096;margin-bottom:28px;max-width:300px}
+.success-page .auth-btn{max-width:280px;margin:0 auto 12px}
+
+/* ── TOAST ── */
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(16px);background:#1a202c;color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:300;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}.toast.err{background:#c53030}
+
+/* ── SPINNER ── */
+.spin{display:inline-block;width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="toast" id="toast"></div>
+<script>
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyRXimcV9fggjxObBHvRaA6_lJi6HGNTdHh_jSRy0FK0uNq1e0ru6jAtuk_sdAyJNYs4A/exec";
+const LOGO = "data:image/jpeg;base64,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";
+
+let session  = null;
+let photos   = [null,null,null,null,null];
+let gpsData  = null;
+let gpsWatch = null;
+
+const $ = s => document.querySelector(s);
+const esc = s => (s||"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function saveSession(){ try{ sessionStorage.setItem("nama_ff",JSON.stringify(session)); }catch(e){} }
+function loadSession(){ try{ return JSON.parse(sessionStorage.getItem("nama_ff")||"null"); }catch(e){ return null; } }
+function clearSession(){ try{ sessionStorage.removeItem("nama_ff"); }catch(e){} }
+
+async function post(body){
+  const r = await fetch(WEB_APP_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(body)});
+  return r.json();
+}
+
+// ── LOGIN ──
+function renderLogin(msg){
+  session=null;
+  document.getElementById("app").innerHTML=`
+  <div class="auth-page">
+    <img class="auth-logo" src="${LOGO}" alt="NAMA">
+    <h1 class="auth-title">NAMA Field Project Form</h1>
+    <p class="auth-sub">Nsawam Adoagyiri Municipal Assembly</p>
+    <div class="auth-card">
+      <div class="fld"><label>Username</label><input id="lu" autocomplete="username" placeholder="Enter your username"></div>
+      <div class="fld" style="margin-bottom:4px"><label>Password</label><input id="lp" type="password" autocomplete="current-password" placeholder="Enter your password"></div>
+      <button class="auth-btn" id="loginBtn">Log in</button>
+      <p class="auth-msg" id="loginMsg">${msg?esc(msg):""}</p>
+    </div>
+    <div class="auth-foot">New here? <a href="#" id="toReg">Create an account</a></div>
+  </div>`;
+  $("#loginBtn").onclick = doLogin;
+  $("#toReg").onclick    = e => { e.preventDefault(); renderRegister(); };
+  $("#lp").addEventListener("keydown",e=>{ if(e.key==="Enter") doLogin(); });
+}
+
+async function doLogin(){
+  if(!WEB_APP_URL){$("#loginMsg").textContent="Web App URL not configured.";return;}
+  const u=$("#lu").value.trim(), p=$("#lp").value;
+  if(!u||!p){$("#loginMsg").textContent="Enter your username and password.";return;}
+  const btn=$("#loginBtn"); btn.disabled=true; btn.innerHTML='<span class="spin"></span>Signing in...';
+  try{
+    const j=await post({action:"login",username:u,password:p});
+    if(j&&j.ok){ session={username:u,password:p,fullName:j.fullName}; saveSession(); renderForm(); }
+    else{
+      btn.disabled=false; btn.textContent="Log in";
+      $("#loginMsg").textContent = j.reason==="pending"?"Your account is awaiting approval.":
+        j.reason==="notfound"||j.reason==="badpass"?"Incorrect username or password.":"Could not sign in. Try again.";
+    }
+  }catch(e){ btn.disabled=false; btn.textContent="Log in"; $("#loginMsg").textContent="Cannot reach server. Check your connection."; }
+}
+
+// ── REGISTER ──
+function renderRegister(){
+  document.getElementById("app").innerHTML=`
+  <div class="auth-page">
+    <img class="auth-logo" src="${LOGO}" alt="NAMA">
+    <h1 class="auth-title">Create an Account</h1>
+    <p class="auth-sub">Your account will be active once approved by the administrator.</p>
+    <div class="auth-card">
+      <div class="fld"><label>Full Name</label><input id="rn" autocomplete="name" placeholder="Your full name"></div>
+      <div class="fld"><label>Username</label><input id="ru" autocomplete="username" placeholder="Choose a username"></div>
+      <div class="fld"><label>Password</label><input id="rp" type="password" placeholder="Choose a password"></div>
+      <div class="fld" style="margin-bottom:4px"><label>Confirm Password</label><input id="rp2" type="password" placeholder="Repeat your password"></div>
+      <button class="auth-btn" id="regBtn">Submit Request</button>
+      <p class="auth-msg" id="regMsg"></p>
+    </div>
+    <div class="auth-foot"><a href="#" id="toLogin">Back to Log in</a></div>
+  </div>`;
+  $("#regBtn").onclick  = doRegister;
+  $("#toLogin").onclick = e => { e.preventDefault(); renderLogin(); };
+}
+
+async function doRegister(){
+  const n=$("#rn").value.trim(),u=$("#ru").value.trim(),p=$("#rp").value,p2=$("#rp2").value;
+  const bad=t=>{ $("#regMsg").textContent=t; };
+  if(!n||!u||!p) return bad("Please fill in all fields.");
+  if(u.length<3)  return bad("Username must be at least 3 characters.");
+  if(p.length<4)  return bad("Password must be at least 4 characters.");
+  if(p!==p2)      return bad("Passwords do not match.");
+  const btn=$("#regBtn"); btn.disabled=true; btn.innerHTML='<span class="spin"></span>Submitting...';
+  try{
+    const j=await post({action:"register",fullName:n,username:u,password:p});
+    if(j&&j.ok) renderLogin("Request submitted. You will be notified once your account is approved.");
+    else{ btn.disabled=false; btn.textContent="Submit Request"; bad(j.reason==="exists"?"That username is already taken.":"Could not submit. Try again."); }
+  }catch(e){ btn.disabled=false; btn.textContent="Submit Request"; bad("Cannot reach server."); }
+}
+
+// ── FORM ──
+function renderForm(){
+  photos=[null,null,null,null,null]; gpsData=null;
+  if(gpsWatch){ navigator.geolocation.clearWatch(gpsWatch); gpsWatch=null; }
+  const name = session&&session.fullName ? session.fullName : session.username;
+  document.getElementById("app").innerHTML=`
+  <div class="hdr">
+    <div class="hdr-inner">
+      <img class="hdr-logo" src="${LOGO}" alt="NAMA">
+      <div class="hdr-txt"><h1>Field Project Form</h1><p>Nsawam Adoagyiri Municipal Assembly</p></div>
+      <div class="hdr-right">
+        <span class="hdr-name">${esc(name)}</span>
+        <button class="logout-btn" id="logout">Sign out</button>
+      </div>
+    </div>
+  </div>
+  <div class="body">
+
+    <div class="scard">
+      <div class="scard-hd">Project Details</div>
+      <div class="scard-body">
+        <div class="fld"><label>Project Title <span class="req">*</span></label>
+          <input type="text" id="f-title" placeholder="Enter the full project title"></div>
+        <div class="fld"><label>Project Description <span class="req">*</span></label>
+          <textarea id="f-desc" placeholder="Brief description of what this project entails"></textarea></div>
+        <div class="fld"><label>Status <span class="req">*</span></label>
+          <select id="f-status">
+            <option value="">Select status</option>
+            <option>Planning</option>
+            <option>Ongoing</option>
+            <option>Completed</option>
+            <option>Cancelled</option>
+          </select></div>
+        <div class="fld"><label>Completion (%) <span class="req">*</span></label>
+          <input type="number" id="f-comp" min="0" max="100" placeholder="Enter percentage e.g. 75">
+          <p class="hint">Enter a number between 0 and 100</p></div>
+      </div>
+    </div>
+
+    <div class="scard">
+      <div class="scard-hd">Location and GPS</div>
+      <div class="scard-body">
+        <div class="fld"><label>Location Name <span class="req">*</span></label>
+          <input type="text" id="f-loc" placeholder="e.g. Asiyaw, Panpanso-Ningo, Sakyikrom"></div>
+        <div class="fld">
+          <label>GPS Coordinates <span class="req">*</span></label>
+          <button class="gps-detect-btn" id="gps-btn" onclick="detectGPS()">
+            Detect my location
+          </button>
+          <div id="gps-result"></div>
+          <p class="hint">Stand in an open area for best accuracy. Tap again to refresh.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="scard">
+      <div class="scard-hd">Project Photos <span style="font-weight:400;opacity:.7;font-size:10px">(at least 1 required, up to 5)</span></div>
+      <div class="scard-body">
+        <div class="photo-grid" id="photo-grid"></div>
+        <p class="photo-count" id="photo-count">0 of 5 photos added</p>
+      </div>
+    </div>
+
+    <div class="scard">
+      <div class="scard-hd">Challenges Encountered <span style="font-weight:400;opacity:.7;font-size:10px">(optional)</span></div>
+      <div class="scard-body">
+        <textarea id="f-challenges" placeholder="Describe any challenges or observations during the field visit" style="width:100%;padding:12px 14px;border:1.5px solid #e8e3d8;border-radius:10px;background:#fafaf8;resize:vertical;min-height:90px"></textarea>
+      </div>
+    </div>
+
+    <button class="submit-btn" id="submitBtn" onclick="doSubmit()">Submit Project Update</button>
+  </div>`;
+
+  $("#logout").onclick = () => { clearSession(); if(gpsWatch){navigator.geolocation.clearWatch(gpsWatch);gpsWatch=null;} renderLogin(); };
+  buildPhotoGrid();
+}
+
+// ── GPS ──
+function detectGPS(){
+  const btn = document.getElementById("gps-btn");
+  if(gpsWatch){ navigator.geolocation.clearWatch(gpsWatch); gpsWatch=null; }
+  btn.className="gps-detect-btn loading";
+  btn.textContent="Getting your location, please wait...";
+  if(!navigator.geolocation){
+    btn.className="gps-detect-btn"; btn.textContent="Detect my location";
+    showToast("GPS is not supported on this browser.",false); return;
+  }
+  gpsWatch = navigator.geolocation.watchPosition(
+    pos => {
+      const lat = pos.coords.latitude;
+      const lng = pos.coords.longitude;
+      const acc = Math.round(pos.coords.accuracy);
+      gpsData = { lat: lat.toFixed(6), lng: lng.toFixed(6), accuracy: acc };
+      showGPSPin(lat, lng, acc);
+      if(acc <= 10){
+        navigator.geolocation.clearWatch(gpsWatch); gpsWatch=null;
+        btn.className="gps-detect-btn"; btn.textContent="Location detected. Tap to refresh";
+      } else {
+        btn.className="gps-detect-btn loading";
+        btn.textContent="Refining accuracy (" + acc + "m), please wait...";
+      }
+    },
+    err => {
+      if(gpsWatch){ navigator.geolocation.clearWatch(gpsWatch); gpsWatch=null; }
+      btn.className="gps-detect-btn"; btn.textContent="Detect my location";
+      const msg =
+        err.code===1 ? "Location access was denied. Please allow location permission in your browser settings and try again." :
+        err.code===2 ? "Your location could not be determined. Move to an open area and try again." :
+        "Location request timed out. Move to an open area and try again.";
+      showToast(msg, false);
+    },
+    { enableHighAccuracy:true, timeout:30000, maximumAge:0 }
+  );
+  setTimeout(()=>{
+    if(gpsWatch){ navigator.geolocation.clearWatch(gpsWatch); gpsWatch=null;
+      const b=document.getElementById("gps-btn");
+      if(b){ b.className="gps-detect-btn"; b.textContent=gpsData?"Location detected. Tap to refresh":"Detect my location"; }
+    }
+  }, 30000);
+}
+
+function showGPSPin(lat,lng,acc){
+  const el = document.getElementById("gps-result");
+  if(!el) return;
+  const cls = acc<=10?"excellent":acc<=25?"fair":"poor";
+  const ico = acc<=10?"&#128994;":acc<=25?"&#128993;":"&#128308;";
+  const lbl = acc<=10?"Excellent accuracy":acc<=25?"Fair accuracy":"Poor accuracy";
+  const sub = acc<=10?"Your location is precise.":acc<=25?"Tap Refresh for a better result.":"Move to an open area and tap Refresh.";
+  el.innerHTML=`
+    <div class="gps-pin-card">
+      <div class="gps-pin-top">
+        <div class="gps-pin-ico">&#128205;</div>
+        <div class="gps-pin-info">
+          <div class="gps-pin-label">Detected Location</div>
+          <div class="gps-pin-coords">${lat.toFixed(6)}&deg;N, ${Math.abs(lng).toFixed(6)}&deg;${lng<0?"W":"E"}</div>
+          <div class="gps-pin-loc">Accuracy: ${acc} metres</div>
+        </div>
+      </div>
+      <div class="gps-acc-row ${cls}">
+        <span class="gps-acc-label ${cls}">${ico} ${lbl}. ${sub}</span>
+        <span class="gps-refresh" onclick="detectGPS()">Refresh</span>
+      </div>
+    </div>`;
+}
+
+// ── PHOTOS ──
+function buildPhotoGrid(){
+  const grid=document.getElementById("photo-grid"); if(!grid)return;
+  let h="",cnt=0;
+  for(let i=0;i<5;i++){
+    if(photos[i]){ cnt++;
+      h+=`<div class="photo-slot has-img"><img src="${photos[i]}" alt="Photo ${i+1}"><div class="ph-del" onclick="removePhoto(${i})">&#x2715;</div></div>`;
+    }else{
+      h+=`<div class="photo-slot" onclick="addPhoto(${i})"><div class="ph-ico">&#128247;</div><div class="ph-num">Photo ${i+1}</div></div>`;
+    }
+  }
+  grid.innerHTML=h;
+  const pc=document.getElementById("photo-count");
+  if(pc) pc.textContent=cnt+" of 5 photo"+(cnt===1?"":"s")+" added";
+}
+
+function addPhoto(idx){
+  const inp=document.createElement("input");
+  inp.type="file"; inp.accept="image/*"; inp.capture="environment";
+  inp.onchange=e=>{
+    const file=e.target.files[0]; if(!file)return;
+    const reader=new FileReader();
+    reader.onload=ev=>{ photos[idx]=ev.target.result; buildPhotoGrid(); };
+    reader.readAsDataURL(file);
+  };
+  inp.click();
+}
+
+function removePhoto(idx){ photos[idx]=null; buildPhotoGrid(); }
+
+// ── SUBMIT ──
+async function doSubmit(){
+  if(!WEB_APP_URL){ showToast("Web App URL not configured.",false); return; }
+  const title  = $("#f-title").value.trim();
+  const desc   = $("#f-desc").value.trim();
+  const status = $("#f-status").value;
+  const comp   = $("#f-comp").value;
+  const loc    = $("#f-loc").value.trim();
+  if(!title)  { showToast("Project title is required.",false); return; }
+  if(!desc)   { showToast("Project description is required.",false); return; }
+  if(!status) { showToast("Please select a status.",false); return; }
+  if(!comp||comp<0||comp>100){ showToast("Enter a completion percentage between 0 and 100.",false); return; }
+  if(!loc)    { showToast("Location name is required.",false); return; }
+  if(!gpsData){ showToast("Please detect your GPS location first.",false); return; }
+  if(!photos.some(p=>p)){ showToast("Please add at least one photo.",false); return; }
+  const btn=$("#submitBtn"); btn.disabled=true; btn.innerHTML='<span class="spin"></span>Uploading and saving...';
+  try{
+    const j=await post({
+      action:"submit", username:session.username, password:session.password,
+      title, description:desc, status, completion:comp,
+      location:loc, lat:gpsData.lat, lng:gpsData.lng, accuracy:gpsData.accuracy,
+      challenges:$("#f-challenges").value.trim(), photos
+    });
+    if(j&&j.ok){ renderSuccess(); }
+    else if(j&&j.reason==="auth"){ clearSession(); renderLogin("Session expired. Please sign in again."); }
+    else{ btn.disabled=false; btn.textContent="Submit Project Update"; showToast("Submission failed. Please try again.",false); }
+  }catch(e){ btn.disabled=false; btn.textContent="Submit Project Update"; showToast("Cannot reach server. Check your connection.",false); }
+}
+
+// ── SUCCESS ──
+function renderSuccess(){
+  if(gpsWatch){ navigator.geolocation.clearWatch(gpsWatch); gpsWatch=null; }
+  document.getElementById("app").innerHTML=`
+  <div class="success-page">
+    <div class="success-ico">&#9989;</div>
+    <h2>Submitted Successfully</h2>
+    <p>Your project update has been saved and photos uploaded to Drive.</p>
+    <button class="auth-btn" style="max-width:280px;margin:0 auto 12px" onclick="renderForm()">+ Add Another Project</button>
+    <button class="auth-btn" style="max-width:280px;margin:0 auto;background:#718096" onclick="clearSession();renderLogin()">Sign Out</button>
+  </div>`;
+}
+
+// ── TOAST ──
+let tT=null;
+function showToast(m,ok=true){
+  const t=$("#toast"); t.textContent=m; t.className="toast show"+(ok?"":" err");
+  clearTimeout(tT); tT=setTimeout(()=>t.className="toast",3500);
+}
+
+// ── BOOT ──
+function boot(){
+  session=loadSession();
+  if(session&&WEB_APP_URL) renderForm();
+  else renderLogin();
+}
+boot();
+</script>
+</body>
+</html>
