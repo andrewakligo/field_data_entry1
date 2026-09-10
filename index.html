@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
-<title>RENT APP</title>
+<title>NAMA Field Project Form</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{min-height:100%;font-family:Arial,sans-serif;font-size:15px;line-height:1.5;background:#f5f0e8;color:#1a202c}
@@ -226,18 +226,19 @@ function renderForm(){
   <div class="body">
 
     <div class="scard">
-      <div class="scard-hd">Grounds  Info</div>
+      <div class="scard-hd">Project Details</div>
       <div class="scard-body">
-        <div class="fld"><label>Full Name <span class="req">*</span></label>
-          <input type="text" id="f-title" placeholder="Enter the First and Last Name"></div>
-        <div class="fld"><label>Contact and Ghana card number <span class="req">*</span></label>
-          <textarea id="f-desc" placeholder="Enter Contact and Ghana card number"></textarea></div>
+        <div class="fld"><label>Project Title <span class="req">*</span></label>
+          <input type="text" id="f-title" placeholder="Enter the full project title"></div>
+        <div class="fld"><label>Project Description <span class="req">*</span></label>
+          <textarea id="f-desc" placeholder="Brief description of what this project entails"></textarea></div>
         <div class="fld"><label>Status <span class="req">*</span></label>
           <select id="f-status">
-            <option value="">Select gender</option>
-            <option>Male</option>
-            <option>Female</option>
-        
+            <option value="">Select status</option>
+            <option>Planning</option>
+            <option>Ongoing</option>
+            <option>Completed</option>
+            <option>Cancelled</option>
           </select></div>
         <div class="fld"><label>Completion (%) <span class="req">*</span></label>
           <input type="number" id="f-comp" min="0" max="100" placeholder="Enter percentage e.g. 75">
